@@ -1,0 +1,169 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns:m="http://schemas.microsoft.com/office/2004/12/omml"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+
+<style>
+ /* Font Definitions */
+ @font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:-536870145 1073786111 1 0 415 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-parent:"";
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:8.0pt;
+	margin-left:0in;
+	line-height:107%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	mso-ascii-font-family:Calibri;
+	mso-ascii-theme-font:minor-latin;
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;
+	mso-hansi-font-family:Calibri;
+	mso-hansi-theme-font:minor-latin;
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-theme-font:minor-bidi;}
+p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-link:"Plain Text Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;
+	mso-bidi-font-family:"Times New Roman";}
+span.PlainTextChar
+	{mso-style-name:"Plain Text Char";
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-unhide:no;
+	mso-style-locked:yes;
+	mso-style-link:"Plain Text";
+	font-family:"Calibri",sans-serif;
+	mso-ascii-font-family:Calibri;
+	mso-hansi-font-family:Calibri;
+	mso-bidi-font-family:"Times New Roman";}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	mso-default-props:yes;
+	mso-ascii-font-family:Calibri;
+	mso-ascii-theme-font:minor-latin;
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;
+	mso-hansi-font-family:Calibri;
+	mso-hansi-theme-font:minor-latin;
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-theme-font:minor-bidi;}
+.MsoPapDefault
+	{mso-style-type:export-only;
+	margin-bottom:8.0pt;
+	line-height:107%;}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.WordSection1
+	{page:WordSection1;}
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-parent:"";
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin-top:0in;
+	mso-para-margin-right:0in;
+	mso-para-margin-bottom:8.0pt;
+	mso-para-margin-left:0in;
+	line-height:107%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	mso-ascii-font-family:Calibri;
+	mso-ascii-theme-font:minor-latin;
+	mso-hansi-font-family:Calibri;
+	mso-hansi-theme-font:minor-latin;}
+</style>
+</head>
+
+{% load humanize %}
+<body lang=EN-US style='tab-interval:.5in'>
+<div class=WordSection1>
+
+<p class=MsoPlainText><span style='mso-ascii-font-family:Calibri;mso-ascii-theme-font:
+minor-latin;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin'>Daily Summary for {{daily_date}} <o:p></o:p></span></p>
+</br>
+{% for list in sql_list %}
+{% if section_headings|get_list_item:list != "" %}
+<b><p class=MsoPlainText><span style='mso-ascii-font-family:Calibri;mso-ascii-theme-font:
+        minor-latin;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin'>
+        {% autoescape off %} {{section_headings|get_list_item:list}} {% endautoescape %}
+        <o:p></o:p></span></p></b></br>
+{% endif %}
+
+     {% if pivots|get_list_item:list == 'no' %}
+     <table class=MsoNormalTable border=
+         {% if table_borders|get_list_item:list == "yes" %} 1 {% else %} 0 {% endif %} cellspacing=0 cellpadding=5
+         style='border-collapse:collapse;border:none;mso-border-alt:solid white .25pt;mso-yfti-tbllook:1184;mso-padding-alt:0in 5.4pt 0in 5.4pt'>
+         <tr> {% for header in headers|get_list_item:list%}
+
+             <th align="left">
+                 {% if column_case == "lower" %}
+                    {{header|to_lowercase}}
+                 {% elif column_case == "upper" %}
+                    {{header|to_uppercase}}
+                 {% else %}
+                    {{header|to_titlecase}}
+                 {% endif %}
+             </th>
+           {% endfor %}
+        </tr>
+        {% for data in output|get_list_item:list%}
+        <tr>
+            {% for header in headers|get_list_item:list%}
+            <td align="left">{{data|get_item:header}} </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+     </table></br></br>
+
+     {% else %}
+     <table class=MsoNormalTable border=
+         {% if table_borders|get_list_item:list == "yes" %} 1 {% else %} 0 {% endif %} cellspacing=0 cellpadding=5
+          style='border-collapse:collapse;border:none;mso-border-alt:solid white
+          .25pt;mso-yfti-tbllook:1184;mso-padding-alt:0in 5.4pt 0in 5.4pt'>
+         {% for data in output|get_list_item:list%}
+         {% for header in headers|get_list_item:list%}
+          <tr>
+              <td align="left">{% autoescape off %}<b>{{header|to_titlecase}}</b> {%endautoescape %} </b></td>
+              <td align="right">{{data|get_item:header}} </td>
+          </tr>
+         {% endfor %}
+         {% endfor %}
+     </table></br></br>
+     {% endif %}
+{% endfor %}
+</body>
+</html>
