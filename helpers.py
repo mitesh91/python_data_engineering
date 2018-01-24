@@ -97,7 +97,7 @@ def create_aurora_db_connection(dsn):
     #mypkey = paramiko.RSAKey.from_private_key_file(pkeyfilepath)
     
     #Private key pulled from odin
-    material ="com.amazon.aws.glue.prod.admin.glue-analytics-bastions-prod@amazon.com"
+    material =""
     pkey = helpers.get_odin_material(material,'PrivateKey')
     pkey = base64.encodestring(pkey).strip()
     pkey_tmpl = '-----BEGIN PRIVATE KEY-----\n%s\n-----END PRIVATE KEY-----'
@@ -112,7 +112,7 @@ def create_aurora_db_connection(dsn):
     # ssh properties
     ssh_user = 'ec2-user'
     ssh_port = 22
-    ssh_host = 'ec2-107-23-244-137.compute-1.amazonaws.com'
+    ssh_host = ''
 
     #db user name and password
     db_user, db_password = get_dsn_credential(dsn)
@@ -275,17 +275,17 @@ def send_html_email(emails, html_content, subject):
     msg.attach(part1)
     msg.attach(part2)
     msg['Subject'] = subject
-    msg['From'] = 'dbsmetricsgenerator@amazon.com'
-    smtp = smtplib.SMTP('smtp.amazon.com')
+    msg['From'] = 'dbsmetricsgenerator@gmail.com'
+    smtp = smtplib.SMTP('smtp.gmail.com')
     #smtp.starttls()
     print('to emails', emails)
     msg['To'] =  ', '.join(emails)
     try:
-        smtp.sendmail('dbsmetricsgenerator@amazon.com', emails, msg.as_string())
+        smtp.sendmail('dbsmetricsgenerator@gmail.com', emails, msg.as_string())
         smtp.quit()
     except:
         time.sleep(60)
-        smtp.sendmail('dbsmetricsgenerator@amazon.com', emails, msg.as_string())
+        smtp.sendmail('dbsmetricsgenerator@gmail.com', emails, msg.as_string())
         smtp.quit()
     print('Sent Out HTML Email')
 
@@ -316,18 +316,18 @@ def send_email(emails, payload, subject, file_input = True):
         msg = MIMEText(payload)
 
     msg['Subject'] = subject
-    msg['From'] = 'dbsmetricsgenerator@amazon.com'
+    msg['From'] = 'dbsmetricsgenerator@gmail.com'
 
     smtp = SMTP('smtp.amazon.com')
     #smtp.starttls()
     msg['To'] =  ', '.join(emails)
 
     try:
-        smtp.sendmail('dbsmetricsgenerator@amazon.com', emails, msg.as_string())
+        smtp.sendmail('dbsmetricsgenerator@gmail.com', emails, msg.as_string())
         smtp.quit()
     except:
         sleep(60)
-        smtp.sendmail('dbsmetricsgenerator@amazon.com', emails, msg.as_string())
+        smtp.sendmail('dbsmetricsgenerator@gmail.com', emails, msg.as_string())
         smtp.quit()
     print('Sent Out CSV Email')
 
@@ -445,4 +445,4 @@ def getS3JsonData(config_file_name, config_s3_dns, config_bucket):
     return config
 
 def getGlobalOverrideConfig():
-    return getS3JsonData('s3://dbs-data-excavator-reporter-configuration/global/reporter-configuration.json', 'DBS.METRICS.ETL.S3.PRD.DAILY', 'dbs-data-excavator-reporter-configuration')
+    return getS3JsonData('s3://dbs-data-excavator-reporter-configuration/global/reporter-configuration.json', 'DBS.METRICS.ETL', 'dbs-data-excavator-reporter-configuration')
